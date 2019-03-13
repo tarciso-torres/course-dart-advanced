@@ -17,9 +17,7 @@ class _HomePageState extends State<HomePage> {
         child: RaisedButton(
           child: Text('Avançar'),
           onPressed: (){
-            Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ArticlePage())
-            );
+            Navigator.pushNamed(context, '/article');
           },
         ),
       ),
