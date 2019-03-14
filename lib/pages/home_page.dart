@@ -7,24 +7,66 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final _formKey = GlobalKey<FormState>();
+  final feedController = TextEditingController();
+
+  List feeds = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:AppBar(
-        title: Text('Meus artigos'),
+        title: Text('Meus feeds'),
+        automaticallyImplyLeading: false,
       ),
-      body: Center(
-        child: RaisedButton(
-          child: Text('Avançar'),
-          onPressed: (){
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ArticlePage(feed: 'https://blog.schoolofnet.com/feed/',)
-              ));
-          },
+      body:Padding(
+        padding: EdgeInsets.all(20),
+        child:  Form(
+        key: _formKey,
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: ListView.builder(
+                itemCount: feeds.length,
+                itemBuilder: (context, index){
+                  return ListTile(
+                    title: Text(feeds[index]),
+                    leading: Icon(Icons.rss_feed),
+                    onTap: () {
+                      print(index.toString());
+                    },
+                  );
+                },
+              )
+            ),
+            TextFormField(
+              keyboardType:TextInputType.url,
+              controller: feedController,
+              decoration: InputDecoration(
+                labelText: 'Link do rss',
+              ),
+              validator: (value) {
+                if(value.isEmpty){
+                  return "Este campo não pode ficar em branco";
+                }
+              },
+            ),
+            RaisedButton(
+              child: Text('Cadastrar'),
+              color: Colors.red,
+              textColor: Colors.white,
+              onPressed: () {
+                if(_formKey.currentState.validate()){
+                  setState(() {
+                    feeds.add(feedController.text);
+                    feedController.text = '';
+                  });
+                }
+              },
+            )
+          ]
         ),
       ),
+      )
     );
   }
 }
