@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../data/save_local.dart';
 import './articles_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,6 +14,14 @@ class _HomePageState extends State<HomePage> {
   List feeds = [];
   @override
   Widget build(BuildContext context) {
+  SaveLocal persistence = new SaveLocal(feedList: feeds);
+  setState(() {
+    persistence.read().then((data){
+      feeds = data;
+    });
+  });
+
+
     return Scaffold(
       appBar:AppBar(
         title: Text('Meus feeds'),
@@ -59,6 +68,8 @@ class _HomePageState extends State<HomePage> {
                   setState(() {
                     feeds.add(feedController.text);
                     feedController.text = '';
+
+                    persistence.save(feeds);
                   });
                 }
               },
