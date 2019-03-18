@@ -41,7 +41,12 @@ class _HomePageState extends State<HomePage> {
                     title: Text(feeds[index]),
                     leading: Icon(Icons.rss_feed),
                     onTap: () {
-                      print(index.toString());
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ArticlePage(feed: feeds[index])
+                        )
+                      );
                     },
                   );
                 },
